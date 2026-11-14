@@ -1,0 +1,13 @@
+# 2 files, 16 accounts, 11 findings
+critical	HA001	htpasswd.sample:3 (intranet)	password stored in plaintext ({PLAIN})
+critical	HA001	shadow.sample:7 (frank)	empty password field: the account logs in without a password
+high	HA003	htpasswd.sample:1 (deploy)	Apache MD5 ($apr1$) is obsolete; use bcrypt ($2y$)
+high	HA002	htpasswd.sample:2 (legacy)	unsalted SHA-1 ({SHA}): identical passwords give identical hashes and rainbow tables apply
+high	HA003	htpasswd.sample:6 (monitor)	traditional DES crypt: only the first 8 characters count and it is trivial to crack
+high	HA003	shadow.sample:5 (dave)	MD5 crypt ($1$) is obsolete; use yescrypt, bcrypt or SHA-512 crypt with many rounds
+high	HA003	shadow.sample:6 (erin)	traditional DES crypt: only the first 8 characters count and it is trivial to crack
+medium	HA005	shadow.sample (bob, ivan)	2 accounts share exactly the same hash, so they share a password
+medium	HA004	shadow.sample:10 (ivan)	sha512crypt with the default 5000 rounds is cheap to attack; set rounds=100000 or more, or use yescrypt
+medium	HA004	shadow.sample:3 (bob)	sha512crypt with the default 5000 rounds is cheap to attack; set rounds=100000 or more, or use yescrypt
+medium	HA004	shadow.sample:8 (gina)	bcrypt cost 5 is low; use 12 or more
+info	HA006	all files	16 accounts: 4 strong hashes, 2 locked
