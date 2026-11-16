@@ -2,6 +2,8 @@
 
 hash-audit reads a shadow file or an Apache style htpasswd file and classifies every account's password hash: empty passwords, plaintext, unsalted SHA-1, DES and MD5 crypt, bcrypt with a low cost, SHA-crypt with few rounds, and several users sharing the same hash. It never prints a hash and never tries to crack one: it only looks at the format.
 
+![Terminal demo of hash-audit on its sample data](docs/demo.svg)
+
 **Live demo:** https://jvch0512.github.io/hash-audit/ (Synthetic accounts with invented hash strings.)
 
 D (LDC), Phobos only. The demo page is rendered from the tool's `--tsv` output by `scripts/site.py` (Python 3, only needed to regenerate the page).
@@ -48,3 +50,13 @@ make test    # 59 checks
 ```
 
 MIT.
+
+## Code scanning (SARIF)
+
+`scripts/tsv2sarif.py` converts the `--tsv` output into SARIF 2.1.0, so findings show up in GitHub code scanning:
+
+```sh
+./bin/hash-audit examples/shadow.sample examples/htpasswd.sample --tsv | python3 scripts/tsv2sarif.py --tool hash-audit --prefix examples > results.sarif
+```
+
+Upload `results.sarif` with `github/codeql-action/upload-sarif`. Severities map to SARIF levels (critical and high to error, medium to warning, low and info to note) and to a `security-severity` score.
